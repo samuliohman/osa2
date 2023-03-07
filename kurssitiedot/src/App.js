@@ -11,9 +11,13 @@ const Course = ({ course }) => {
 const Header = ({ header }) => { return (<h1>{header}</h1>) }
 
 const Content = ({ parts }) => {
+  const exercises = parts.map(part => part.exercises)
+  const sum = exercises.reduce((a, b) => a + b, 0)
+
   return (
     <div>
       {parts.map((part, i) => <Part key={i} name={part.name} amount={part.exercises} />)}
+      <b>Total exercises: {sum}</b>
     </div>
   )
 }
