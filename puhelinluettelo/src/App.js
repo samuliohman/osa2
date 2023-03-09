@@ -17,15 +17,20 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    if (persons.map(person => person.name).includes(newName))
-      alert(`${newName} is already added to phonebook`)
-    else {
+    if (persons.map(person => person.name).includes(newName)) {
+      const confirmed = window.confirm(`${newName} is already added to phonebook. \nDo you wish to replace the number with a new one?`)
+      const person = persons.find(p => p.name = newName)
+      if (confirmed) {
+        personService
+          .putPerson({ ...person, number: newNumber }, person.id)
+          .then(person => setPersons(persons.filter(p => p.id !== person.id).concat(person)))
+      }
+    } else {
       const newPerson = { name: newName, number: newNumber }
       personService
         .addPerson(newPerson)
         .then(person => setPersons(persons.concat(person)))
     }
-
     setNewName('')
     setNewNumber('')
   }

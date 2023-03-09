@@ -11,10 +11,15 @@ const addPerson = (newPerson) => {
     return request.then(response => response.data)
 }
 
+const putPerson = (newPerson, id) => {
+    const request = axios.put(`${baseURL}/${id}`, newPerson)
+    return request.then(response => response.data)
+}
+
 const deletePerson = (id) => {
     const request = axios.delete(`${baseURL}/${id}`)
     return request.then(response => response.date)
 }
 
-const exportObj = { getAll, addPerson, deletePerson }
+const exportObj = { getAll, addPerson, deletePerson, putPerson }
 export default exportObj
