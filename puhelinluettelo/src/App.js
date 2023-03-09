@@ -1,39 +1,8 @@
 import { useState, useEffect } from 'react'
 import personService from './services/persons.js'
-
-const Filter = ({ filter, update }) => {
-  return (
-    <form>
-      <div>Filter shown with: <input value={filter} onChange={update} /></div>
-    </form>
-  )
-}
-
-const PersonForm = ({ name, number, updateName, updateNumber, addPerson }) => {
-  return (
-    <form onSubmit={addPerson}>
-      <div>name: <input value={name} onChange={updateName} /></div>
-      <div>number: <input value={number} onChange={updateNumber} /></div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
-  )
-}
-
-const Persons = ({ persons, newFilter }) => {
-  return (
-    <div>
-      {
-        persons.filter(person =>
-          person.name.toLowerCase()
-            .includes(newFilter.toLowerCase())).map(person =>
-              <p key={person.name}>{person.name} {person.number}</p>
-            )
-      }
-    </div>
-  )
-}
+import Persons from './Components/Persons.js'
+import PersonForm from './Components/PersonForm.js'
+import Filter from './Components/Filter.js'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -61,13 +30,22 @@ const App = () => {
     setNewNumber('')
   }
 
-  const updateName = (event) => {
-    setNewName(event.target.value)
-  }
+  const updateName = (event) => setNewName(event.target.value)
 
   const updateNumber = (event) => setNewNumber(event.target.value)
 
   const updateFilter = (event) => setNewFilter(event.target.value)
+
+  const deletePerson = (id) => {
+    const person = persons.filter(person => person.id === id)
+    const confirmed = window.confirm(`Are you sure you want to delete ${person.name}`)
+    if (confirmed) {
+      personService
+        .deletePerson(id)
+        .then(person =>
+          setPersons(persons.filter(p => p.id !== id)))
+    }
+  }
 
   return (
     <div>
@@ -80,7 +58,7 @@ const App = () => {
         addPerson={addPerson} />
 
       <h2>Numbers</h2>
-      <Persons persons={persons} newFilter={newFilter} />
+      <Persons persons={persons} newFilter={newFilter} deletePerson={deletePerson} />
     </div>
   )
 
