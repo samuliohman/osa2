@@ -52,26 +52,29 @@ const App = () => {
   const updateFilter = (event) => setNewFilter(event.target.value)
 
   const deletePerson = (id) => {
-    const person = persons.filter(person => person.id === id)
-    const confirmed = window.confirm(`Are you sure you want to delete ${person.name}`)
+    const deletedPerson = persons.find(person => person.id === id)
+    const confirmed = window.confirm(`Are you sure you want to delete ${deletedPerson.name}`)
     if (confirmed) {
       personService
         .deletePerson(id)
         .then(person => {
           setPersons(persons.filter(p => p.id !== id))
           //Set up success message
+          console.log("1")
           setErrorStyle('success')
-          setErrorMessage(`Deleted ${newName} succesfully.`)
-          setTimeout(() => setErrorMessage(null), 3000)
+          console.log("2")
+
+          console.log(deletedPerson)
+          console.log("3")
+          setErrorMessage(`Deleted ${deletedPerson.name} succesfully.`)
+
         })
         .catch(error => {
           //Set up error message
-          setErrorMessage(`Person '${person.name}' was already removed from server.`)
+          setErrorMessage(`Person '${deletedPerson.name}' was already removed from server.`)
           setErrorStyle('error')
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 3000)
         })
+      setTimeout(() => setErrorMessage(null), 3000)
     }
   }
 
