@@ -60,19 +60,14 @@ const App = () => {
         .then(person => {
           setPersons(persons.filter(p => p.id !== id))
           //Set up success message
-          console.log("1")
           setErrorStyle('success')
-          console.log("2")
-
-          console.log(deletedPerson)
-          console.log("3")
           setErrorMessage(`Deleted ${deletedPerson.name} succesfully.`)
 
         })
         .catch(error => {
           //Set up error message
-          setErrorMessage(`Person '${deletedPerson.name}' was already removed from server.`)
           setErrorStyle('error')
+          setErrorMessage(`Person '${deletedPerson.name}' was already removed from server.`)
         })
       setTimeout(() => setErrorMessage(null), 3000)
     }
