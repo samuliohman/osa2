@@ -1,5 +1,5 @@
 
-const Countries = ({ countries }) => {
+const Countries = ({ countries, showFunction }) => {
     if (countries.length >= 10) {
         return (
             <div>Too many matches, please be more specific.</div>
@@ -28,7 +28,12 @@ const Countries = ({ countries }) => {
     return (
         <div>
             {countries.map((country, i) => {
-                return <div key={i}>{country["name"]["common"]}</div>
+                return (
+                    <div key={i}>
+                        {country["name"]["common"]}
+                        <button onClick={() => showFunction(country["name"]["common"].toLowerCase())}>Show</button>
+                    </div>
+                )
             })}
         </div>
     )

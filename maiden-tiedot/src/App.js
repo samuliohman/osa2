@@ -18,13 +18,17 @@ function App() {
     setFilter(event.target.value)
   }
 
+  const showFunction = (country) => {
+    setFilter(country)
+  }
+
   return (
     <div>
       <Filter filter={filter} update={updateFilter} />
       <Countries
-        countries={
-          countries.filter(country =>
-            country["name"]["common"].toLowerCase().includes(filter))} />
+        countries={countries.filter(country =>
+          country["name"]["common"].toLowerCase().includes(filter))}
+        showFunction={showFunction} />
     </div>
   )
 }
