@@ -1,5 +1,5 @@
 
-const Countries = ({ countries, showFunction }) => {
+const Countries = ({ countries, showFunction, weather }) => {
     if (countries.length >= 10) {
         return (
             <div>Too many matches, please be more specific.</div>
@@ -21,6 +21,10 @@ const Countries = ({ countries, showFunction }) => {
                     return (<li key={language}>{language}</li>)
                 })}
                 <img style={{ paddingTop: '50px' }} src={countries[0]['flags']['png']} alt='flag' />
+                <h1>Weather info</h1>
+                <p>Temperature: {weather['temp_c']}{'\xB0C'}</p>
+                {(weather.length !== 0) ? <img src={weather['condition']['icon']} alt='weather_icon' /> : null}
+                <p>Wind speed: {(weather['wind_kph'] / 3.6).toPrecision(2)}m/s</p>
             </div>
         )
     }
