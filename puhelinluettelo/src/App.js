@@ -18,6 +18,12 @@ const App = () => {
       .then(persons => setPersons(persons))
   }, [])
 
+  const updateError = (style, message, timeout) => {
+    setErrorStyle(style)
+    setErrorMessage(message)
+    setTimeout(() => setErrorMessage(null), timeout)
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
     if (persons.map(person => person.name).includes(newName)) {
@@ -27,19 +33,17 @@ const App = () => {
         personService
           .putPerson({ ...person, number: newNumber }, person.id)
           .then(person => setPersons(persons.filter(p => p.id !== person.id).concat(person)))
-        setErrorStyle('success')
-        setErrorMessage(`${newName}'s number to the changed succesfully.`)
-        setTimeout(() => setErrorMessage(null), 3000)
+        updateError('success', `${newName}'s number to the changed succesfully.`, 3000)
       }
     } else {
       const newPerson = { name: newName, number: newNumber }
       personService
         .addPerson(newPerson)
-        .then(person => setPersons(persons.concat(person)))
-      //Set up success message
-      setErrorStyle('success')
-      setErrorMessage(`Person ${newName} added to the phonebook.`)
-      setTimeout(() => setErrorMessage(null), 3000)
+        .then(person => {
+          updateError('success', `Person ${newName} added to the phonebook.`, 3000)
+          setPersons(persons.concat(person))
+        })
+        .catch(error => updateError('error', error.response.data.error, 3000))
     }
     setNewName('')
     setNewNumber('')
